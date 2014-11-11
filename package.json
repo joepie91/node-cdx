@@ -29,7 +29,7 @@
     "gulp-rename": "~1.2.0",
     "gulp-util": "~2.2.17",
     "JSONStream": "^0.9.0",
-    "adhoc-stream": "^0.0.1",
+    "adhoc-stream": "^0.0.1"
   },
   "dependencies": {
     "lodash": "^2.4.1",
