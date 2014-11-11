@@ -1,18 +1,9 @@
-fs = require "fs"
 CDXRecordCollection = require "./lib/CDXRecordCollection"
-JSONStream = require "JSONStream"
-stream = require "stream"
-adhocStream = require "adhoc-stream"
 
-methods =
-	parseFile: (file) ->
-		collection = new CDXRecordCollection()
+spawnFunc = ->
+	return new CDXRecordCollection();
 
-		fs.createReadStream file
-			.pipe collection.stream
-			.pipe adhocStream.transformSync objectMode: true, (obj) ->
-				@push obj.data
-			.pipe JSONStream.stringify(false)
-			.pipe process.stdout
+spawnFunc.CDXRecordCollection = CDXRecordCollection
+spawnFunc.CDXRecord = require "./lib/CDXRecord"
 
-methods.parseFile "./sample.cdx"
+module.exports = spawnFunc

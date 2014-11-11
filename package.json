@@ -2,13 +2,14 @@
   "name": "cdx",
   "version": "0.0.1",
   "description": "A parser and generator for (Internet Archive) CDX files.",
+  "homepage": "https://github.com/joepie91/node-cdx",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@git.cryto.net:projects/joepie91/node-cdx"
+    "url": "git://github.com/joepie91/node-cdx.git"
   },
   "keywords": [
     "archiving",
@@ -26,11 +27,11 @@
     "gulp-plumber": "~0.6.3",
     "gulp-remember": "~0.2.0",
     "gulp-rename": "~1.2.0",
-    "gulp-util": "~2.2.17"
-  },
-  "dependencies": {
+    "gulp-util": "~2.2.17",
     "JSONStream": "^0.9.0",
     "adhoc-stream": "^0.0.1",
+  },
+  "dependencies": {
     "lodash": "^2.4.1",
     "moment": "^2.8.3"
   }

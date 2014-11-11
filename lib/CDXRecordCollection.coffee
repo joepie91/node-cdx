@@ -2,7 +2,16 @@ _ = require "lodash"
 CDXRecord = require "./CDXRecord"
 stream = require "stream"
 
-module.exports = class CDXRecordCollection
+module.exports = class CDXRecordCollection extends stream.Transform
+	constructor: (@signature = []) ->
+		super
+		@_writableState.objectMode = false
+		@_readableState.objectMode = true
+		@_headerFound = false
+		@_buffer = ""
+
+		@reverseSignatureMap = _.invert @signatureMap
+
 	records: []
 	signature: null
 	delimiter: null
@@ -59,24 +68,6 @@ module.exports = class CDXRecordCollection
 		signatureMarkers = signatureData[5...].split(" ")
 		@signature = (@reverseSignatureMap[marker] for marker in signatureMarkers)
 
-	constructor: (@signature = []) ->
-		@reverseSignatureMap = _.invert @signatureMap
-		@stream = new RecordStreamer(this)
-
-	createRecord: (data) ->
-		record = new CDXRecord(@delimiter, @signature)
-		record.parseRecord data
-		@records.push record
-		return record
-
-class RecordStreamer extends stream.Transform
-	constructor: (@collection) ->
-		super
-		@_writableState.objectMode = false
-		@_readableState.objectMode = true
-		@_headerFound = false
-		@_buffer = ""
-
 	_transform: (chunk, encoding, done) ->
 		@_buffer += chunk
 		lines = @_buffer.split(/\r?\n/)
@@ -85,14 +76,20 @@ class RecordStreamer extends stream.Transform
 		for line in lines
 			if not @_headerFound
 				# The first line is the header.
-				@collection._parseSignature line
+				@_parseSignature line
 				@_headerFound = true
 			else
 				try
-					record = @collection.createRecord(line)
+					record = @createRecord(line)
 					this.push record
 				catch err
 					this.emit "error", err
 					return
 
 		done()
+
+	createRecord: (data) ->
+		record = new CDXRecord(@delimiter, @signature)
+		record.parseRecord data
+		@records.push record
+		return record
