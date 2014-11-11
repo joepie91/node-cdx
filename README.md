@@ -14,9 +14,9 @@ npm install --save cdx
 
 ## Usage
 
-`cdx` is a streaming parser. It takes a CDX byte stream as input (regardless of the source), and outputs an object stream of CDXRecord objects with the named attributes set to the corresponding values from the CDX stream. Additionally, a plain object containing these attributes is available as the `data` attribute, for easy (JSON) serialization.
+`cdx` is a streaming parser. It takes a CDX byte stream as input (regardless of the source), and outputs an object stream of `CDXRecord` objects with the named attributes set to the corresponding values from the CDX stream. Additionally, a plain object containing these attributes is available as the `data` attribute, for easy (JSON) serialization.
 
-The signature is automatically parsed from the first line of the CDX data. Specifying a custom signature is not currently supported.
+The signature is automatically parsed from the first line of the CDX data. Specifying a custom signature is not currently supported. If a field is not specified (that is, it is either not listed in the signature or its value is `-`), it will simply not be set on the `CDXRecord`.
 
 ```javascript
 var cdx = require("cdx"),
